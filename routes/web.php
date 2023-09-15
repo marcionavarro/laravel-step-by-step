@@ -17,47 +17,44 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('sobre', function () {
-    return "<h1>Página sobre</h1>";
-})->name('hello');
+Route::get('/home', function(){
+    $blogs = [
+        [
+            'title' => 'Título um',
+            'body' => 'Este é um corpo de texto',
+            'status' => 1
+        ],
+        [
+            'title' => 'Título dois',
+            'body' => 'Este é um corpo de texto',
+            'status' => 0
+        ],
+        [
+            'title' => 'Título três',
+            'body' => 'Este é um corpo de texto',
+            'status' => 1
+        ],
+        [
+            'title' => 'Título quatro',
+            'body' => 'Este é um corpo de texto',
+            'status' => 1
+        ],
+    ];
+    return view('home', compact('blogs'));
+});
+
+Route::get('/sobre', function () {
+    return view('about');
+})->name('about');
 
 Route::get('contato', function () {
-    return "<h1>Página Contato</h1>";
+    return view('contact');
 });
 
-Route::get('contato/{id}', function ($id) {
-    return $id;
-})->name('edit-contact');
-
-Route::get('home', function () {
-    return "<a href='".route('edit-contact', 1)."'>Sobre</a>";
-});
-
-/** Route Grouping */
-Route::group(['prefix' => 'customer'], function(){
-    Route::get('/', function () {
-        return "<h1>Lista Customizada</h1>";
-    });
-    
-    Route::get('/create', function () {
-        return "<h1>Lista Customizada Create</h1>";
-    });
-    
-    Route::get('show', function () {
-        return "<h1>Lista Customizada Show</h1>";
-    });
-});
-
-// Route Methods
 /**
- * GET - Request a resource
- * POST - Create a new resource
- * PUT - Update a resource
- * PATCH - Modify a resource
- * DELETE - Delete a resource
+ * MVC
+ * -----
+ * M = Model
+ * V = Views
+ * C = Controller
  */
-
-/** Fallback Route */
-Route::fallback(function(){
-    return "<h1>Rota não existe!</h1>";
-});
