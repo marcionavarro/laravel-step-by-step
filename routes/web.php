@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,10 +24,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', HomeController::class);
+/**
+ * CRUD
+ * C = Create
+ * R = Read
+ * U = Update
+ * D = Delete
+ */
+Route::get('/posts/trash', [PostController::class, 'trashed'])->name('posts.trashed');
+Route::get('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+Route::delete('/posts/{id}/force-delete', [PostController::class, 'forceDelete'])->name('posts.force_delete');
+Route::resource('posts', PostController::class);
+
+
+
+/* Route::get('/home', HomeController::class);
 Route::post('/upload-file', [ImageController::class, 'handleImage'])->name('upload-file');
 
-Route::get('/success', function(){
+Route::get('/success', function () {
     return '<h1>Upload realizado com sucesso!</h1>';
 })->name('success');
 
@@ -37,7 +52,4 @@ Route::get('/contato', [ContactController::class, 'index'])->name('contact');
 Route::resource('blog', BlogController::class);
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'handleLogin'])->name('login.submit');
-
-
-
+Route::post('/login', [LoginController::class, 'handleLogin'])->name('login.submit'); */

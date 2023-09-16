@@ -1,0 +1,1 @@
+php artisan migrate --path=/database/migrations/2023_09_15_233014_add_posts_table.php
