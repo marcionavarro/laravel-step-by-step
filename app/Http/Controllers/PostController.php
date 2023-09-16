@@ -9,6 +9,11 @@ use File;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('authCheck2')->except('index');
+        // $this->middleware('authCheck2')->only('create', 'show');
+    }
     /**
      * Display a listing of the resource.
      */
