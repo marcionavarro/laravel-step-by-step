@@ -3,47 +3,30 @@
 
 @section('content')
     <main role="main" class="container">
-        <div class="row my-5">
-            @foreach ($posts as $post)
-                <div class="col-md-3 mt-5">
-                    <div class="card border-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-body text-dark">
-                            <h4>{{ $post->title }}</h4>
-                            <p>{{ $post->description }}</p>
-                            @foreach ($post->tags as $tag)
-                                <li>{{ $tag->name }}</li>
-                            @endforeach
-                        </div>
+        <img src="{{ asset('storage/images/new_image.jpg') }}" alt="">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-8">
+                <div class="card mt-5">
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-dark" role="alert" style="border-radius:0;">
+                                <strong>{{ $error }}</strong>
+                            </div>
+                        @endforeach
+                    @endif
+                    <div class="card-body">
+                        <form action="{{ route('upload-file') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="" class="form-label">Upload</label>
+                                <input type="file" class="form-control" name="image" id="" placeholder=""
+                                    aria-describedby="fileHelpId">
+                            </div>
+                            <button type="submit" class="btn btn-outline-dark">Enviar</button>
+                        </form>
                     </div>
                 </div>
-                {{--  <div class="col-md-3 mt-5">
-                    <div class="card border-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-body text-dark">
-                            <h4>{{ $category->title }}</h4>
-                            <p>{{ $category->description }}</p>
-                            <button class="btn btn-dark">{{ $category->category->name }}</button>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="col-md-3 mt-5">
-                    <div class="card border-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-body text-dark">
-                            <h4>{{ $address->user->name }}</h4>
-                            <p>{{ $address->user->email }}</p>
-                            <p class="card-text">{{ $address->address }}</p>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="col-md-3 mt-5">
-                    <div class="card border-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-body text-dark">
-                            <h4>{{ $user->name }}</h4>
-                            <p>{{ $user->email }}</p>
-                            <p class="card-text">{{ $user->address->address }}</p>
-                        </div>
-                    </div>
-                </div> --}}
-            @endforeach
+            </div>
         </div>
     </main>
 @endsection

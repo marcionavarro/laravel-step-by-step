@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
-use App\Models\Category;
-use App\Models\MyPost;
-use App\Models\Post;
-use App\Models\Tag;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use File;
 
 class HomeController extends Controller
 {
@@ -18,23 +13,10 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // post - may have many tags
-        // tag - may have many posts
-        // pivot table
-        $posts = Post::with('tags')->get();
-        $tag = Tag::first();
-        // $post->tags()->attach([2,3,4]);
-        // return $post;
-        return view('home', compact('posts'));
+        return view('home');
 
-        /* $categories = Category::find(2)->posts;
-        return view('home', compact('categories')); */
-
-        /* $addressess = Address::all();
-        return view('home', compact('addressess'));
-        */
-
-        /* $users = User::all();
-        return view('home', compact('users')); */
+        // Storage::delete('/images/new_image.jpg');
+        // File::delete(storage_path('/app/public/images/pOQm9jAM0O1YrPKN6zYlV6b3ITxrFrdsORpu5JaQ.jpg'));
+        // unlink(storage_path('/app/public/images/Q08i0vEqXuyo2kVneIkYAX7FJ4E9pRjTs2LsH8u1.jpg'));
     }
 }
