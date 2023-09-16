@@ -25,6 +25,13 @@ Route::get('/', function () {
 
 Route::get('/home', HomeController::class);
 Route::post('/upload-file', [ImageController::class, 'handleImage'])->name('upload-file');
+
+Route::get('/success', function(){
+    return '<h1>Upload realizado com sucesso!</h1>';
+})->name('success');
+
+Route::get('/download', [ImageController::class, 'download'])->name('download');
+
 Route::get('/sobre', [AboutController::class, 'index'])->name('about');
 Route::get('/contato', [ContactController::class, 'index'])->name('contact');
 Route::resource('blog', BlogController::class);
