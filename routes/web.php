@@ -10,6 +10,8 @@ use App\Http\Controllers\PostController;
 use App\Mail\OrderShipped;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,12 +51,12 @@ Route::get('/unavailable', function () {
     return view('unavailable');
 })->name('unavailable');
 
-Route::get('contato', function(){
+Route::get('contato', function () {
     $posts = Post::all();
     return view('contact', compact('posts'));
 });
 
-Route::get('send-email', function(){
+Route::get('send-email', function () {
     Mail::send(new OrderShipped);
 
     /* Mail::raw('this is a test mail', function($message){
@@ -62,6 +64,33 @@ Route::get('send-email', function(){
     }); */
 
     dd('success');
+});
+
+Route::get('get-session', function (Request $request) {
+    // $data = $request->session()->get('_token');
+    $data = $request->session()->all();
+    // $data = session()->all();
+    dd($data);
+});
+
+Route::get('save-session', function (Request $request) {
+    session(['user_ip' => '123.23.11']);
+    $request->session()->put(['user_status' => 'logged_in']);
+    session(['user_id' => '123']);
+    return redirect('get-session');
+});
+
+Route::get('destroy-session', function (Request $request) {
+    $request->session()->flush();
+    // session()->flush();
+    // session()->forget(['user_status', 'user_ip']);
+    // $request->session()->forget(['user_status', 'user_ip']);
+    return redirect('get-session');
+});
+
+Route::get('flash-session', function(Request $request){
+    $request->session()->flash('status', 'true');
+    return redirect('get-session');
 });
 
 // Route::group([], callback)
