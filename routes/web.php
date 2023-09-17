@@ -7,6 +7,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
+use App\Mail\OrderShipped;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,16 @@ Route::get('/unavailable', function () {
 Route::get('contato', function(){
     $posts = Post::all();
     return view('contact', compact('posts'));
+});
+
+Route::get('send-email', function(){
+    Mail::send(new OrderShipped);
+
+    /* Mail::raw('this is a test mail', function($message){
+        $message->to('test@gmail.com')->subject('hi this is a test mail');
+    }); */
+
+    dd('success');
 });
 
 // Route::group([], callback)
