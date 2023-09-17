@@ -17,13 +17,14 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
+            'image' =>  fake()->imageUrl(640, 480, 'animal', true),
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'status' => rand(0,1),
-            'publish_date' => fake()->date(),
-            'user_id' => 1,
-            'category_id' => rand(0,4),
-            'views' => rand(0,1000)
+            // 'status' => rand(0,1),
+            // 'publish_date' => fake()->date(),
+            // 'user_id' => 1,
+            'category_id' => rand(1,2),
+            // 'views' => rand(0,1000)
         ];
     }
 }

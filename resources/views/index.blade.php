@@ -31,7 +31,7 @@
                                 <td><img src="{{ asset($post->image) }}" alt="" width="80" height="40"></td>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->description }}</td>
-                                <td>{{ $post->category->name }}</td>
+                                <td>{{ (isset($post->category->name) ? $post->category->name : $post->category_id) }}</td>
                                 <td>{{ date('d-m-Y', strtotime($post->created_at)) }}</td>
                                 <td>
                                     <div class="d-flex">
