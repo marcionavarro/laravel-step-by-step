@@ -15,6 +15,10 @@
             <a class="navbar-brand" href="#">
                 Laravel Fullstack
             </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button class="btn btn-sm btn-outline-primary">Logout</button>
+            </form>
         </div>
     </nav>
 
