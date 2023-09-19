@@ -23,9 +23,10 @@ class PostController extends Controller
         /* $posts = Cache::rememberForever('posts', function(){
             return Post::with('category')->paginate(3);
         }); */
-        $posts = Cache::remember('posts-page-'.request('page', 1), 60*3, function(){
+        /* $posts = Cache::remember('posts-page-'.request('page', 1), 60*3, function(){
             return Post::with('category')->paginate(3);
-        });
+        }); */
+        $posts = Post::with('category')->paginate(5);
         return view('index', compact('posts'));
     }
 
@@ -34,6 +35,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Post::class);
+
         $categories = Category::all();
         return view('create', compact('categories'));
     }
@@ -43,6 +46,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Post::class);
+
         $request->validate([
             'image' => ['required', 'image', 'max:2028'],
             'title' => ['required', 'max:255'],
@@ -79,6 +84,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::findOrFail($id);
+        $this->authorize('update', $id);
+
         $categories = Category::all();
         return view('edit', compact('post', 'categories'));
     }
@@ -88,13 +95,14 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $post = Post::findOrFail($id);
+        $this->authorize('update', $id);
+
         $request->validate([
             'title' => ['required', 'max:255'],
             'category_id' => ['required', 'integer'],
             'description' => ['required']
         ]);
-
-        $post = Post::findOrFail($id);
 
         if ($request->hasFile('image')) {
             $request->validate([
@@ -123,13 +131,14 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $destory = Post::findOrFail($id);
+        $this->authorize('delete', $id);
         $destory->delete($id);
-
         return redirect()->route('posts.index');
     }
 
     public function trashed()
     {
+        $this->authorize('delete');   
         $posts = Post::onlyTrashed()->get();
         return view('trashed', compact('posts'));
     }
@@ -137,17 +146,17 @@ class PostController extends Controller
     public function restore(string $id)
     {
         $post = Post::onlyTrashed()->findOrFail($id);
+        $this->authorize('delete', $id);
         $post->restore();
-
         return redirect()->back();
     }
 
     public function forceDelete(string $id)
     {
+        $this->authorize('delete_post');
         $post = Post::onlyTrashed()->findOrFail($id);
         File::delete(public_path($post->image));
         $post->forceDelete();
-
         return redirect()->back();
     }
 }

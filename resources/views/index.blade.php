@@ -6,8 +6,10 @@
             Todas Postagens
 
             <div>
-                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-success">Criar</a>
-                <a href="{{ route('posts.trashed') }}" class="btn btn-sm btn-warning">Lixeira</a>
+                @can('create', \App\Models\Post::class)
+                    <a href="{{ route('posts.create') }}" class="btn btn-sm btn-success">Criar</a>
+                    <a href="{{ route('posts.trashed') }}" class="btn btn-sm btn-warning">Lixeira</a>
+                @endcan
             </div>
         </h5>
         <div class="card-body">
@@ -31,19 +33,24 @@
                                 <td><img src="{{ asset($post->image) }}" alt="" width="80" height="40"></td>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->description }}</td>
-                                <td>{{ (isset($post->category->name) ? $post->category->name : $post->category_id) }}</td>
+                                <td>{{ isset($post->category->name) ? $post->category->name : $post->category_id }}</td>
                                 <td>{{ date('d-m-Y', strtotime($post->created_at)) }}</td>
                                 <td>
                                     <div class="d-flex">
                                         <a href="{{ route('posts.show', $post->id) }}"
                                             class="btn btn-sm btn-success">Ver</a>
-                                        <a href="{{ route('posts.edit', $post->id) }}"
-                                            class="btn btn-sm btn-primary mx-2">Editar</a>
-                                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger">Exluir</button>
-                                        </form>
+                                        @can('update', $post)
+                                            <a href="{{ route('posts.edit', $post->id) }}"
+                                                class="btn btn-sm btn-primary mx-2">Editar</a>
+                                        @endcan
+                                        @can('delete', $post)
+                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger">Exluir</button>
+                                            </form>
+                                        @endcan
+
                                     </div>
                                 </td>
                             </tr>
