@@ -1,5 +1,8 @@
 <?php
 
+use App\DataTables\UsersDataTable;
+use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('user/{id}/edit', function($id){
+    return "<h1>Editar #$id</h1>";
+})->name('user.edit');
+
+Route::get('user/{id}/delete', function($id){
+    return "<h1>Deletar #$id</h1>";
+})->name('user.delete');
+
+Route::get('/dashboard', function (UsersDataTable $dataTable) {
+    return $dataTable->render('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
