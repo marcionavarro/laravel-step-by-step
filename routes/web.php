@@ -1,9 +1,11 @@
 <?php
 
 use App\DataTables\UsersDataTable;
+use App\Helpers\ImageFilter;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Intervention\Image\ImageManagerStatic;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +41,13 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('image', function(){
+    $img = ImageManagerStatic::make('image.jpg');
+    $img->filter(new ImageFilter(5));
+    
+    // $img->crop(400, 400);
+    // $img->save('imagecrop2.jpg', 80);
+    return $img->response();
+});
