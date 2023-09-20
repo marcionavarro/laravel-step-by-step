@@ -54,3 +54,14 @@ Route::get('user-register', function(){
     event(new UserRegisterd($email));
     dd('message send');
 });
+
+Route::get('greeting/{locale}', function($locale){
+    App::setLocale($locale);
+    return view('greeting');
+})->name('greeting');
+
+/* Route::get('greeting', function(){
+    return view('greeting');
+}); */
+
+
