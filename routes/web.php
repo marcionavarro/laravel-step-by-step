@@ -2,6 +2,7 @@
 
 use App\DataTables\UsersDataTable;
 use App\Helpers\ImageFilter;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -51,3 +52,10 @@ Route::get('image', function(){
     // $img->save('imagecrop2.jpg', 80);
     return $img->response();
 });
+
+Route::get('shop', [CartController::class, 'shop'])->name('shop');
+Route::get('cart', [CartController::class, 'cart'])->name('cart');
+Route::get('add-to-cart/{product_id}',[CartController::class, 'addToCart'])->name('add-to-cart');
+Route::get('qty-increment/{rowId}', [CartController::class, 'qtyIncrement'])->name('qty-increment');
+Route::get('qty-decrement/{rowId}', [CartController::class, 'qtyDecrement'])->name('qty-decrement');
+Route::get('remove-product/{rowId}', [CartController::class, 'removeProduct'])->name('remove-product');
