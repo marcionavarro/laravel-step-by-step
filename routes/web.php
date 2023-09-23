@@ -4,9 +4,12 @@ use App\DataTables\UsersDataTable;
 use App\Helpers\ImageFilter;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\ImageManagerStatic;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +62,26 @@ Route::get('add-to-cart/{product_id}',[CartController::class, 'addToCart'])->nam
 Route::get('qty-increment/{rowId}', [CartController::class, 'qtyIncrement'])->name('qty-increment');
 Route::get('qty-decrement/{rowId}', [CartController::class, 'qtyDecrement'])->name('qty-decrement');
 Route::get('remove-product/{rowId}', [CartController::class, 'removeProduct'])->name('remove-product');
+
+Route::get('create-role', function(){
+    /* $role = Role::create(['name' => 'publisher']);
+    return $role; */
+
+   /*  $permission = Permission::create(['name' => 'edit articles']);
+    return $permission; */
+    
+    $user = auth()->user();
+    // $user->assignRole('writer');
+    // $user->givePermissionTo('edit articles');
+
+    if($user->can('edit articles')){
+        return  'Usuário autorizado';
+    }else{
+        return 'Usuário não autorizado';
+    }
+});
+
+Route::get('posts', function(){
+    $posts = Post::all();
+    return view('post.post', compact('posts'));
+});
